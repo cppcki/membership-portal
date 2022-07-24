@@ -1,14 +1,18 @@
 import requests
 from datetime import datetime
 from flask import Flask, render_template, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+CORS(app)
 
 @app.route("/")
 def index():
   return render_template("index.html")
 
-@app.route("/users")
+@app.route("/users", methods=["GET"])
 def users():
   return jsonify({
     "users": [
@@ -19,7 +23,7 @@ def users():
     ]
   })
 
-@app.route("/api/events")
+@app.route("/api/events", methods=["GET"])
 def events():
   try:
     spreadsheetId = '16Nx4J93o5kNA22tLcIXEwGonr_t41tQC-4-7ZnFIhE8'
@@ -106,4 +110,5 @@ def events():
     # if that isn't wrong then there's a bug somewhere in this code
     except: return 'Something went wrong.', 500
 
-app.run(debug = True)
+if __name__ == "__main__":
+  app.run(debug = True, port=5050)
