@@ -1,12 +1,20 @@
+import os
 import requests
+from dotenv import load_dotenv
 from datetime import datetime
 from flask import Flask, render_template, jsonify
 from flask_cors import CORS
 
+load_dotenv()
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 CORS(app)
+
+ENV = os.environ.get("env")
+print(ENV);
+PORT = 8080 if ENV == "PRODUCTION" else 5050
+DEBUG = True if ENV == "DEVELOPMENT" else False
 
 @app.route("/")
 def index():
@@ -111,4 +119,4 @@ def events():
     except: return 'Something went wrong.', 500
 
 if __name__ == "__main__":
-  app.run(debug = True, port=5050)
+  app.run(debug = DEBUG, port=PORT)
