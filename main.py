@@ -103,10 +103,12 @@ def events():
 
         formatted_event.pop('date')
         formatted_event.pop('time')
+        
+        formatted_event['type'] = formatted_event['type'].split()
 
         # append single parsed event to current month's list of events
         monthly_formatted_events.append(formatted_event)
-
+        
       # append an entire month's events to the response json
       formatted_event_data[f'{month_year}'] = monthly_formatted_events
 
